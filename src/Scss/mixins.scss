@@ -1,0 +1,480 @@
+/**
+    Миксин для создания гибкой сетки
+
+    .some-class {
+      @include flex-grid(20px, 3);
+    }
+ */
+@mixin flex-grid($gap, $columns, $justify-content: space-between, $align-items: center, $flex-direction: row) {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: $flex-direction;
+    flex-basis: auto;
+    justify-content: $justify-content;
+    align-items: $align-items;
+
+    & > * {
+        flex: 1;
+
+        &:not(:nth-child(#{$columns}n)) {
+            margin-right: $gap;
+        }
+    }
+
+    // Устанавливаем максимальную ширину блоков через media query
+    @media (max-width: 480px) {
+        & > * {
+            flex-basis: 100%;
+            max-width: 100%;
+            width: 100%;
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        & > *:first-child {
+            flex: 100%;
+            max-width: 100%;
+            width: 100%;
+            margin-right: 0;
+            margin-left: 0;
+        }
+        & > *:not(:first-child) {
+            flex: 100%;
+            max-width: 100%;
+            width: 100%;
+            margin-right: 0;
+            margin-left: 0;
+
+        }
+    }
+}
+
+
+/**
+    Миксин для создания адаптивных изображений
+
+    .some-class {
+      @include responsive-image(400px, 300px);
+    }
+ */
+@mixin responsive-image($width, $height) {
+    width: $width;
+    height: $height;
+    object-fit: cover;
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        height: auto;
+    }
+}
+
+
+/**
+    Миксин для создания градиента
+
+    .header {
+      @include gradient(top, #fff, #ccc);
+    }
+ */
+@mixin gradient($direction, $start-color, $end-color) {
+    background: $start-color;
+    background: linear-gradient(to $direction, $start-color, $end-color);
+}
+
+
+/**
+    Центрируют элементы по горизонтали, вертикали или по обеим осям, в зависимости от переданного параметра
+
+    .my-element {
+      position: relative;
+      width: 200px;
+      height: 100px;
+      background-color: #f00;
+
+      @include align(XY);
+    }
+ */
+@mixin align($axis) {
+    position: absolute;
+    @if $axis == X {
+        left: 50%;
+        transform: translateX(-50%);
+    } @else if $axis == Y {
+        top: 50%;
+        transform: translateY(-50%);
+    } @else if $axis == XY {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+
+/**
+    Миксин для создания адаптивной верстки
+
+    @include respond-to(isMobile, $max-width: 960px) {
+        стили для планшетов с шириной не более 960px
+    }
+
+    @include respond-to(isMobile, $min-width: 1600px) {
+        стили для мониторов с шириной не менее 1600px
+    }
+ */
+@mixin respond-to($breakpoint, $min-width: null, $max-width: null) {
+    @if $breakpoint == isMobile {
+        @media (max-width: #{if($max-width != null, $max-width, 833px)}) {
+            @content;
+        }
+    } @else if $breakpoint == isTablet {
+        @media (min-width: #{if($min-width != null, $min-width, 834px)}) and (max-width: #{if($max-width != null, $max-width, 1279px)}) {
+            @content;
+        }
+    } @else if $breakpoint == isLaptop {
+        @media (min-width: #{if($min-width != null, $min-width, 1280px)}) and (max-width: #{if($max-width != null, $max-width, 1919px)}) {
+            @content;
+        }
+    } @else if $breakpoint == isDesktop {
+        @media (min-width: #{if($min-width != null, $min-width, 1920px)}) {
+            @content;
+        }
+    }
+}
+
+
+/**
+    Миксин для создания кроссбраузерных свойств
+
+    .some-class {
+      @include prefix(border-radius, 5px);
+    }
+ */
+@mixin prefix($property, $value) {
+    -webkit-#{$property}: $value;
+    -moz-#{$property}: $value;
+    -ms-#{$property}: $value;
+    -o-#{$property}: $value;
+    #{$property}: $value;
+}
+
+
+/**
+    Миксин для создания анимации
+
+    .some-class {
+      @include animation(slide-in, 1s, ease-in, 0s, infinite, alternate);
+    }
+ */
+@mixin animation($name, $duration, $timing-function, $delay, $iteration-count, $direction) {
+    animation-name: $name;
+    animation-duration: $duration;
+    animation-timing-function: $timing-function;
+    animation-delay: $delay;
+    animation-iteration-count: $iteration-count;
+    animation-direction: $direction;
+}
+
+
+/**
+    Задает поворот элемента на указанный угол в градусах.
+
+    .my-element {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+
+      @include rotate(45deg);
+    }
+ */
+@mixin rotate($angle) {
+    transform: rotate($angle);
+}
+
+
+/**
+    Миксин для создания границы с радиусом углов
+
+    .some-class {
+      @include border-radius(10px);
+    }
+ */
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+
+/**
+    Миксин для создания тени
+
+    .some-class {
+      @include box-shadow(2px, 2px, 10px, 0px, rgba(0, 0, 0, 0.2));
+    }
+ */
+@mixin box-shadow($x, $y, $blur, $spread, $color) {
+    -webkit-box-shadow: $x $y $blur $spread $color;
+    -moz-box-shadow: $x $y $blur $spread $color;
+    box-shadow: $x $y $blur $spread $color;
+}
+
+
+/**
+    Миксин для создания градиента на тексте
+
+    .some-class {
+      @include text-gradient(#ff5e62, #ff9966);
+    }
+ */
+@mixin text-gradient($start-color, $end-color) {
+    background: linear-gradient(to right, $start-color, $end-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/**
+    Миксин для создания градиента на фоне
+
+    .some-class {
+      @include gradient-background(#1e90ff, #00bfff);
+    }
+ */
+@mixin gradient-background($start-color, $end-color) {
+    background: linear-gradient(to bottom right, $start-color, $end-color);
+}
+
+
+/**
+    Миксин для создания текстового эффекта
+
+    .some-class {
+      @include text-effect(#fff, #000, 2px, 2px);
+    }
+ */
+@mixin text-effect($color, $shadow-color, $shadow-offset-x, $shadow-offset-y) {
+    color: $color;
+    text-shadow: $shadow-color $shadow-offset-x $shadow-offset-y 0;
+}
+
+
+/**
+    Миксин для создания внутренней тени на элементе
+
+    .some-class {
+      @include inner-shadow(#000, 5px);
+    }
+ */
+@mixin inner-shadow($color, $blur) {
+    box-shadow: inset 0 0 $blur $color;
+}
+
+
+/**
+    Миксин для создания эффекта размытия на элементе
+    .some-class {
+      @include blur-effect(5px);
+    }
+ */
+@mixin blur-effect($blur) {
+    filter: blur($blur);
+}
+
+
+/**
+    Миксин для создания эффекта увеличения на элементе при наведении
+
+    .some-class {
+      @include zoom-effect(1.2);
+    }
+ */
+@mixin zoom-effect($scale) {
+    transition: transform 0.3s ease-in-out;
+    &:hover {
+        transform: scale($scale);
+    }
+}
+
+
+/**
+    Миксин для создания эффекта непрерывно движущейся полосы на элементе
+
+    .some-class {
+      @include marquee-effect(#000, #fff);
+    }
+ */
+@mixin marquee-effect($color, $background-color) {
+    color: $color;
+    background-color: $background-color;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    animation: marquee 10s linear infinite;
+    @keyframes marquee {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+}
+
+
+/**
+    Миксин для создания эффекта анимированного фона на элементе
+
+    .some-class {
+      @include animated-background('path/to/image.jpg', 10s, 0s, 0 0, cover);
+    }
+ */
+@mixin animated-background($url, $duration, $delay, $position, $size) {
+    background: url($url);
+    background-size: $size;
+    background-position: $position;
+    animation: animatedBackground $duration linear infinite;
+    animation-delay: $delay;
+    @keyframes animatedBackground {
+        0% {
+            background-position: $position;
+        }
+        100% {
+            background-position: calc(#{$position} + 100%) $position;
+        }
+    }
+}
+
+
+/**
+    Миксин для создания анимированного градиента
+    .some-class {
+      @include animated-gradient(#ff69b4, #ff8c00);
+    }
+ */
+@mixin animated-gradient($start-color, $end-color) {
+    background: linear-gradient(to bottom right, $start-color, $end-color);
+    animation: animate-gradient 5s ease-in-out infinite;
+    @keyframes animate-gradient {
+        0% {
+            background-position: left;
+        }
+        100% {
+            background-position: right;
+        }
+    }
+}
+
+
+/**
+    Микс для создания кнопки
+
+    .btn-primary {
+      @include btn(#007bff, #fff);
+    }
+ */
+@mixin btn($bg-color, $text-color) {
+    padding: 14px 30px;
+    background-color: $bg-color;
+    color: $text-color;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 30px;
+    width: auto;
+    font-size: 16px;
+
+    &:hover {
+        background-color: darken($bg-color, 10%);
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+}
+
+
+/**
+    @include font-inter(normal, 16px, 1.5);
+    @include font-inter(bold, 24px, 1.2);
+ */
+// Определяем переменную для шрифта Inter
+$inter-font: 'Inter', Arial, sans-serif;
+
+// Микс для установки шрифта
+@mixin font-inter($weight: normal, $size: 16px, $line-height: 1.1) {
+    font-family: $inter-font;
+    font-weight: $weight;
+    font-size: $size;
+    line-height: $line-height;
+}
+
+
+/**
+    @include font-jura(normal, 16px, 1.5);
+    @include font-jura(bold, 24px, 1.2);
+ */
+// Определяем переменную для шрифта Jura
+$jura-font: 'Jura', Arial, sans-serif;
+
+// Микс для установки шрифта
+@mixin font-jura($weight: normal, $size: 16px, $line-height: 1.5) {
+    font-family: $jura-font !important;
+    font-weight: $weight !important;
+    font-size: $size !important;
+    line-height: $line-height !important;
+}
+
+/**
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      @include inputStyles;
+      width: 100%;
+    }
+ */
+@mixin inputStyles {
+    @include font-jura(normal, 16px, 1.5);
+    min-height: 48px;
+    border-radius: 30px;
+    font-size: 20px;
+    line-height: 28px;
+    height: 50px;
+    padding: 0 15px;
+    text-align: center;
+    box-shadow: $boxShadow;
+    display: flex;
+    align-items: center;
+    border: 2px solid $greyWhite;
+    background-color: $white;
+    color: $greyWhite;
+    font-weight: 700;
+    margin: 15px 0 5px;
+
+    &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    @include respond-to(isMobile) {
+        font-size: 18px;
+        line-height: 32px;
+    }
+
+    &.active {
+        border: 2px solid $hover;
+    }
+
+
+    &:focus {
+        box-shadow: $boxShadowHover;
+        outline: none;
+    }
+
+    &::-webkit-input-placeholder::before {
+        color: $greyBlack;
+    }
+}

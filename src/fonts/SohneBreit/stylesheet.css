@@ -1,0 +1,144 @@
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-ExtrafettKursiv.woff2') format('woff2'),
+        url('SohneBreit-ExtrafettKursiv.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-Dreiviertelfett.woff2') format('woff2'),
+        url('SohneBreit-Dreiviertelfett.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-Buch.woff2') format('woff2'),
+        url('SohneBreit-Buch.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-BuchKursiv.woff2') format('woff2'),
+        url('SohneBreit-BuchKursiv.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-Extrafett.woff2') format('woff2'),
+        url('SohneBreit-Extrafett.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-DreiviertelfettKurs.woff2') format('woff2'),
+        url('SohneBreit-DreiviertelfettKurs.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-KraftigKursiv.woff2') format('woff2'),
+        url('SohneBreit-KraftigKursiv.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-Leicht.woff2') format('woff2'),
+        url('SohneBreit-Leicht.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-HalbfettKursiv.woff2') format('woff2'),
+        url('SohneBreit-HalbfettKursiv.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-Extraleicht.woff2') format('woff2'),
+        url('SohneBreit-Extraleicht.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-Halbfett.woff2') format('woff2'),
+        url('SohneBreit-Halbfett.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-Kraftig.woff2') format('woff2'),
+        url('SohneBreit-Kraftig.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-LeichtKursiv.woff2') format('woff2'),
+        url('SohneBreit-LeichtKursiv.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-FettKursiv.woff2') format('woff2'),
+        url('SohneBreit-FettKursiv.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-Fett.woff2') format('woff2'),
+        url('SohneBreit-Fett.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne Breit';
+    src: url('SohneBreit-ExtraleichtKursiv.woff2') format('woff2'),
+        url('SohneBreit-ExtraleichtKursiv.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
