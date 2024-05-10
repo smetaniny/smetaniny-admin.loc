@@ -26,11 +26,11 @@ const PagesList = (props) => {
                 omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
             >
                 <TextField source="id" label="Индитификатор" />
-                <TextField source="alias" label="Псевдоним" />
-                <TextField source="name" label="Имя" />
-                <TextField source="description" label="Описание" />
-                <DateField source="created_at" showTime label="Создали" />
-                <DateField source="updated_at" showTime label="Обноаили" />
+                <TextField source="content.menu_title" label="Псевдоним" />
+                <TextField source="content.slug" label="URL" />
+                <TextField source="ontent.parent_id" label="ID Родителя" />
+                <DateField source="created_at" showTime label="Создание" />
+                <DateField source="updated_at" showTime label="Обновление" />
             </DatagridConfigurable>
         </Fragment>
     </List>

@@ -15,6 +15,7 @@ export const authProvider = (setShowLoader: Function): AuthProvider => ({
             email: username,
             password: password,
         }, {
+            //
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
@@ -22,12 +23,15 @@ export const authProvider = (setShowLoader: Function): AuthProvider => ({
         // Получаем результат из ответа
         const result = await response.data;
         // Извлекаем статус, пользователя и токен из результата
-        const {status = false, user = {}, token = "", config = {}} = result;
+        const {status = false, user = {}, token = "", permissions = {}} = result;
         // Если статус успешный, сохраняем токен и пользователя в sessionStorage
         if (status) {
+            // Устанавливаем токен
             sessionStorage.setItem('token', token);
+            // Устанавливаем пользователя
             sessionStorage.setItem('user', JSON.stringify(user));
-            sessionStorage.setItem('config', JSON.stringify(config));
+            // Устанавливаем права
+            sessionStorage.setItem('permissions', JSON.stringify(permissions));
             // Устанавливаем токен в заголовке Authorization для всех будущих запросов
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             // Возвращаем успешный результат входа
@@ -37,12 +41,14 @@ export const authProvider = (setShowLoader: Function): AuthProvider => ({
             return Promise.reject();
         }
     },
+
     /**
      * Функция выхода.
      */
     logout: () => {
-        // Удаляем данные пользователя и токен из sessionStorage
+        // Удаляем данные пользователя
         sessionStorage.removeItem("user");
+        //  Удаляем токен из
         sessionStorage.removeItem("token");
         // Возвращаем успешный результат выхода
         return Promise.resolve();

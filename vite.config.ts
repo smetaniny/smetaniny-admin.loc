@@ -10,9 +10,4 @@ export default defineConfig({
         host: true,
     },
     base: './',
-    resolve: {
-        alias: {
-            '@': '/src'
-        }
-    }
 });

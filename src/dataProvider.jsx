@@ -1,235 +1,151 @@
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import { omit } from "lodash";
 import { URL_API } from "./settings";
 import axios from 'axios';
+import queryString from 'query-string';
 
 // Получаем токен из localStorage
 const token = localStorage.getItem('token');
 
-// Создаем Axios-инстанс с установленным заголовком Authorization
-const axiosInstance = axios.create({
+// В коде комментарии будут в именительном падеже
+const apiClient = axios.create({
+    // базовый URL для API
     baseURL: URL_API,
+    // заголовки запроса
     headers: {
-        'x-graphql-token': token, // Устанавливаем токен как заголовок
-        'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок Authorization
-        'Content-Type': 'application/json', // Устанавливаем тип контента
+        // Устанавливаем токен как заголовок
+        'x-graphql-token': token,
+        // Добавляем токен в заголовок Authorization
+        'Authorization': `Bearer ${token}`,
+        // Устанавливаем тип контента
+        'Content-Type': 'application/json',
     },
 });
 
-// Создаем клиент Apollo с кастомным link на основе Axios
-const client = new ApolloClient({
-    link: axiosInstance,
-    cache: new InMemoryCache(),
-    defaultOptions: {
-        watchQuery: {
-            fetchPolicy: 'no-cache',
-            errorPolicy: 'ignore',
-        },
-        query: {
-            fetchPolicy: 'no-cache',
-            errorPolicy: 'all',
-        },
+// Интерсептор для обработки запросов
+apiClient.interceptors.request.use(config => {
+    // Добавить здесь логику обработки запросов, если необходимо
+    return config;
+});
+
+// Интерсептор для обработки ответов
+apiClient.interceptors.response.use(
+    // Обработка успешного ответа
+    response => {
+        // Добавить здесь логику обработки успешных ответов, если необходимо
+        return response;
+    },
+    // Обработка ошибки
+    error => {
+        // Если получен ответ с кодом 500
+        if (error.response && error.response.status === 500) {
+            // Бросить ошибку с текстом ошибки из ответа
+            throw new Error(error.response.data.errors);
+        }
+        // Продолжить передачу ошибки, если она не связана со статусом 500
+        return Promise.reject(error);
     }
-});
+);
 
-const fields = {
-    posts: "id title body author_id created_at",
-    authors: "id name"
-};
-
+// Конфигурация провайдера данных
 export const dataProvider = {
-    getList: (resource, {sort, pagination, filter}) => {
-        const {field, order} = sort;
-        const {page, perPage} = pagination;
-        return client
-            .query({
-                query: gql`
-            query ($limit: Int, $offset: Int, $order_by: [${resource}_order_by!], $where: ${resource}_bool_exp) {
-                ${resource}(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
-                    ${fields[resource]}
-                }
-                ${resource}_aggregate(where: $where) {
-                    aggregate {
-                        count
-                    }
-                }
-            }`,
-                variables: {
-                    limit: perPage,
-                    offset: (page - 1) * perPage,
-                    order_by: {[field]: order.toLowerCase()},
-                    where: Object.keys(filter).reduce(
-                        (prev, key) => ({
-                            ...prev,
-                            [key]: {_eq: filter[key]},
-                        }),
-                        {}
-                    ),
-                },
-            })
-            .then((result) => ({
-                data: result.data[resource],
-                total: result.data[`${resource}_aggregate`].aggregate.count,
-            }));
+    // Метод для получения списка ресурсов
+    getList: async (resource, params) => {
+        // Строим URL для запроса с учетом параметров запроса
+        let url = `${resource}?${queryString.stringify(params.query)}`;
+
+        // Выполняем GET-запрос к API
+        const response = await apiClient.get(url);
+
+        // Преобразуем данные ответа в массив, если они не являются таковыми
+        const data = Array.isArray(response.data) ? response.data : [response.data];
+
+        // Форматируем данные, добавляя к каждому элементу идентификатор
+        const formattedData = data.map(item => ({...item, id: item.id ? item.id.toString() : null}));
+
+        // Возвращаем отформатированные данные и общее количество записей
+        return {
+            data: formattedData,
+            total: formattedData.length,
+        };
     },
-    getOne: (resource, params) => {
-        return client
-            .query({
-                query: gql`
-            query ($id: Int!) {
-                ${resource}_by_pk(id: $id) {
-                    ${fields[resource]}
-                }
-            }`,
-                variables: {
-                    id: params.id,
-                },
-            })
-            .then((result) => ({data: result.data[`${resource}_by_pk`]}));
+
+    // Получение множества ресурсов
+    getMany: async (resource, params) => {
+        // Формирование URL для запроса, включая параметры запроса
+        const url = `${resource}?${queryString.stringify({id: params.ids})}`;
+        // Отправка GET запроса к API
+        const response = await apiClient.get(url);
+        // Проверка на массив данных в ответе, если не массив - преобразование в массив
+        const data = Array.isArray(response.data) ? response.data : [response.data];
+        // Форматирование данных, включая преобразование id в строку, если необходимо
+        const formattedData = data.map(item => ({...item, id: item.id ? item.id.toString() : null}));
+        // Возврат отформатированных данных
+        return {
+            data: formattedData,
+        };
     },
-    getMany: (resource, params) => {
-        return client
-            .query({
-                query: gql`
-            query ($where: ${resource}_bool_exp) {
-                ${resource}(where: $where) {
-                    ${fields[resource]}
-                }
-            }`,
-                variables: {
-                    where: {
-                        id: {_in: params.ids},
-                    },
-                },
-            })
-            .then((result) => ({data: result.data[resource]}));
+
+    // Получение одного ресурса
+    getOne: async (resource, params) => {
+        // Формирование URL для запроса, включая идентификатор ресурса
+        const url = `${resource}/${params.id}`;
+        // Отправка GET запроса к API и извлечение данных из ответа
+        const {data} = await apiClient.get(url);
+        // Возврат полученных данных
+        return {
+            data: data,
+        };
     },
-    getManyReference: (
-        resource,
-        {target, id, sort, pagination, filter}
-    ) => {
-        const {field, order} = sort;
-        const {page, perPage} = pagination;
-        return client
-            .query({
-                query: gql`
-            query ($limit: Int, $offset: Int, $order_by: [${resource}_order_by!], $where: ${resource}_bool_exp) {
-                ${resource}(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
-                    ${fields[resource]}
-                }
-                ${resource}_aggregate(where: $where) {
-                    aggregate {
-                        count
-                    }
-                }
-            }`,
-                variables: {
-                    limit: perPage,
-                    offset: (page - 1) * perPage,
-                    order_by: {[field]: order.toLowerCase()},
-                    where: Object.keys(filter).reduce(
-                        (prev, key) => ({
-                            ...prev,
-                            [key]: {_eq: filter[key]},
-                        }),
-                        {[target]: {_eq: id}}
-                    ),
-                },
-            })
-            .then((result) => ({
-                data: result.data[resource],
-                total: result.data[`${resource}_aggregate`].aggregate.count,
-            }));
+
+    // Создание нового ресурса
+    create: async (resource, params) => {
+        // Формирование URL для запроса
+        const url = `${resource}`;
+        // Отправка POST запроса к API с данными для создания ресурса
+        const {data} = await apiClient.post(url, params.data);
+        // Возврат данных созданного ресурса с присвоенным идентификатором
+        return {
+            data: {...data, id: data.id},
+        };
     },
-    create: (resource, params) => {
-        return client
-            .mutate({
-                mutation: gql`
-            mutation ($data: ${resource}_insert_input!) {
-                insert_${resource}_one(object: $data) {
-                    ${fields[resource]}
-                }
-            }`,
-                variables: {
-                    data: omit(params.data, ['__typename']),
-                },
-            })
-            .then((result) => ({
-                data: result.data[`insert_${resource}_one`],
-            }));
+
+    // Обновление ресурса
+    update: async (resource, params) => {
+        // Формирование URL для запроса, включая идентификатор ресурса
+        const url = `${resource}/${params.id}`;
+        // Отправка PUT запроса к API с обновленными данными ресурса
+        const {data} = await apiClient.put(url, params);
+        // Возврат обновленных данных ресурса
+        return {
+            data: data,
+        };
     },
-    update: (resource, params) => {
-        return client
-            .mutate({
-                mutation: gql`
-            mutation ($id: Int!, $data: ${resource}_set_input!) {
-                update_${resource}_by_pk(pk_columns: { id: $id }, _set: $data) {
-                    ${fields[resource]}
-                }
-            }`,
-                variables: {
-                    id: params.id,
-                    data: omit(params.data, ['__typename']),
-                },
-            })
-            .then((result) => ({
-                data: result.data[`update_${resource}_by_pk`],
-            }));
+
+    // Удаление ресурса
+    delete: async (resource, params) => {
+        // Формирование URL для запроса, включая идентификатор ресурса
+        const url = `${resource}/${params.id}`;
+        // Отправка DELETE запроса к API для удаления ресурса
+        await apiClient.delete(url);
+        // Возврат предыдущих данных ресурса (до удаления)
+        return {
+            data: params.previousData,
+        };
     },
-    updateMany: (resource, params) => {
-        return client
-            .mutate({
-                mutation: gql`
-            mutation ($where: ${resource}_bool_exp!, $data: ${resource}_set_input!) {
-                update_${resource}(where: $where, _set: $data) {
-                    affected_rows
-                }
-            }`,
-                variables: {
-                    where: {
-                        id: {_in: params.ids},
-                    },
-                    data: omit(params.data, ['__typename']),
-                },
-            })
-            .then((result) => ({
-                data: params.ids,
-            }));
-    },
-    delete: (resource, params) => {
-        return client
-            .mutate({
-                mutation: gql`
-            mutation ($id: Int!) {
-                delete_${resource}_by_pk(id: $id) {
-                    ${fields[resource]}
-                }
-            }`,
-                variables: {
-                    id: params.id,
-                },
-            })
-            .then((result) => ({
-                data: result.data[`delete_${resource}_by_pk`],
-            }));
-    },
-    deleteMany: (resource, params) => {
-        return client
-            .mutate({
-                mutation: gql`
-            mutation ($where: ${resource}_bool_exp!) {
-                delete_${resource}(where: $where) {
-                    affected_rows
-                }
-            }`,
-                variables: {
-                    where: {
-                        id: {_in: params.ids},
-                    },
-                },
-            })
-            .then((result) => ({
-                data: params.ids,
-            }));
+
+    // Массовое удаление ресурсов
+    deleteMany: async (resource, params) => {
+        // Извлечение идентификаторов ресурсов из параметров запроса
+        const {ids} = params;
+        // Асинхронное удаление каждого ресурса по его идентификатору
+        await Promise.all(ids.map(async (id) => {
+            // Формирование URL для запроса, включая идентификатор ресурса
+            const url = `${resource}/${id}`;
+            // Отправка DELETE запроса к API для удаления ресурса
+            await apiClient.delete(url);
+        }));
+        // Возврат идентификаторов удаленных ресурсов
+        return {
+            data: ids,
+        };
     },
 };

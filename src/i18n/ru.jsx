@@ -8,6 +8,10 @@ const customRussianMessages = {
         },
     },
     ra: {
+        sort: {
+            ASC: 'Возрастание',
+            DESC: 'Убывание',
+        },
         action: {
             add_filter: 'Добавить фильтр',
             add: 'Добавить',
