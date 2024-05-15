@@ -5,7 +5,6 @@ import {
 } from "react-admin";
 import {BrowserRouter} from 'react-router-dom';
 
-
 import {authProvider} from "./authProvider";
 import i18nProvider from "./i18nProvider";
 import {dataProvider} from "./dataProvider";
@@ -14,7 +13,8 @@ import {smetaninyTheme} from "./layout/Themes";
 import Loader from "./components/Loader";
 import Dashboard from "./Dashboard";
 
-import { ListPages } from './pages/Pages.jsx';
+import Pages from './pages/Pages.jsx';
+import Permissions from './pages/Permissions.jsx';
 
 export const App = () => {
     const [showLoader, setShowLoader] = useState(true);
@@ -30,12 +30,8 @@ export const App = () => {
                 dashboard={Dashboard}
                 disableTelemetry
             >
-                <Resource
-                    name="pages"
-                    list={ListPages}
-                    // edit={EditPage}
-                    // show={ShowPage}
-                />
+                <Resource name={`pages`} {...Pages} />
+                <Resource name={`permissions`} {...Permissions} />
             </Admin>
         </BrowserRouter>
     </>

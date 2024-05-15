@@ -147,6 +147,9 @@ const customRussianMessages = {
         pages: {
             name: 'Страницы сайта',
         },
+        permissions: {
+            name: 'Разрешения',
+        },
     },
 };
 

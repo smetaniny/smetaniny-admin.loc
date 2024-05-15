@@ -2,19 +2,12 @@ import { URL_API } from "./settings";
 import axios from 'axios';
 import queryString from 'query-string';
 
-// Получаем токен из localStorage
-const token = localStorage.getItem('token');
-
 // В коде комментарии будут в именительном падеже
 const apiClient = axios.create({
     // базовый URL для API
     baseURL: URL_API,
     // заголовки запроса
     headers: {
-        // Устанавливаем токен как заголовок
-        'x-graphql-token': token,
-        // Добавляем токен в заголовок Authorization
-        'Authorization': `Bearer ${token}`,
         // Устанавливаем тип контента
         'Content-Type': 'application/json',
     },
@@ -22,7 +15,15 @@ const apiClient = axios.create({
 
 // Интерсептор для обработки запросов
 apiClient.interceptors.request.use(config => {
-    // Добавить здесь логику обработки запросов, если необходимо
+    // Получаем токен из sessionStorage
+    const token = sessionStorage.getItem("token");
+console.log('token', token);
+    // Если токен есть, добавляем его к заголовкам запроса
+    if (token) {
+        config.headers['x-graphql-token'] = token;
+        config.headers['Authorization'] = `Bearer ${token}`;
+    }
+
     return config;
 });
 
@@ -35,8 +36,16 @@ apiClient.interceptors.response.use(
     },
     // Обработка ошибки
     error => {
+        if (error.response && error.response.status === 401) {
+            // Удаляем данные пользователя
+            sessionStorage.removeItem("user");
+            //  Удаляем токен
+            sessionStorage.removeItem("token");
+            //  Удаляем разрешения
+            sessionStorage.removeItem("permissions");
+        }
         // Если получен ответ с кодом 500
-        if (error.response && error.response.status === 500) {
+        if (error.response && error.response.status !== 200) {
             // Бросить ошибку с текстом ошибки из ответа
             throw new Error(error.response.data.errors);
         }
@@ -49,11 +58,24 @@ apiClient.interceptors.response.use(
 export const dataProvider = {
     // Метод для получения списка ресурсов
     getList: async (resource, params) => {
-        // Строим URL для запроса с учетом параметров запроса
-        let url = `${resource}?${queryString.stringify(params.query)}`;
+        const query = {
+            pagination: JSON.stringify(params.pagination),
+            sort: JSON.stringify(params.sort),
+            filter: JSON.stringify(params.filter),
+        };
+
+        let url = `${resource}?${queryString.stringify(query)}`;
 
         // Выполняем GET-запрос к API
         const response = await apiClient.get(url);
+
+        // Получаем заголовки ответа
+        const headers = response.headers;
+        // Получаем значение заголовка 'X-Total-Count'
+        const totalCount = headers.get('X-Total-Count');
+
+        // Получаем значение заголовка 'Content-Range'
+        const contentRange = headers.get('Content-Range');
 
         // Преобразуем данные ответа в массив, если они не являются таковыми
         const data = Array.isArray(response.data) ? response.data : [response.data];
@@ -64,7 +86,7 @@ export const dataProvider = {
         // Возвращаем отформатированные данные и общее количество записей
         return {
             data: formattedData,
-            total: formattedData.length,
+            total: parseInt(contentRange.split('/').pop(), 10),
         };
     },
 

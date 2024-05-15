@@ -32,8 +32,6 @@ export const authProvider = (setShowLoader: Function): AuthProvider => ({
             sessionStorage.setItem('user', JSON.stringify(user));
             // Устанавливаем права
             sessionStorage.setItem('permissions', JSON.stringify(permissions));
-            // Устанавливаем токен в заголовке Authorization для всех будущих запросов
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             // Возвращаем успешный результат входа
             return Promise.resolve();
         } else {
@@ -48,8 +46,10 @@ export const authProvider = (setShowLoader: Function): AuthProvider => ({
     logout: () => {
         // Удаляем данные пользователя
         sessionStorage.removeItem("user");
-        //  Удаляем токен из
+        //  Удаляем токен
         sessionStorage.removeItem("token");
+        //  Удаляем разрешения
+        sessionStorage.removeItem("permissions");
         // Возвращаем успешный результат выхода
         return Promise.resolve();
     },
@@ -61,10 +61,8 @@ export const authProvider = (setShowLoader: Function): AuthProvider => ({
      * Функция проверки аутентификации.
      */
     checkAuth: async () => {
-        // Проверяем наличие токена в sessionStorage
-        const token = sessionStorage.getItem("token");
         // Если токен есть, возвращаем успешный результат
-        if (token) {
+        if (sessionStorage.getItem("token")) {
             setShowLoader(false)
             return Promise.resolve();
         } else {
