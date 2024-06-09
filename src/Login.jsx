@@ -24,11 +24,16 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const translate = useTranslate();
 
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+
     const notify = useNotify();
     const login = useLogin();
     const location = useLocation();
 
-    const handleSubmit = (auth) => {
+    const handleSubmit = () => {
+        const auth = { username, password }; // Используйте значения из состояний
         setLoading(true);
         login(
             auth,
@@ -65,8 +70,7 @@ const Login = () => {
                     minHeight: '100vh',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    background:
-                        'url(https://source.unsplash.com/featured/1600x900)',
+                    background: '№F8F8F8',
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                 }}
@@ -78,9 +82,9 @@ const Login = () => {
                         justifyContent: 'start',
                     }}
                     >
-                        <NavLink to={"https://smetaniny.ru/"} className="loginLink">
-                            Smetanina Kristina
-                        </NavLink>
+                        <a href={"https://smetaniny.ru/"} target={"_blank"} className="loginLink">
+                            Smetaniny
+                        </a>
                     </Box>
                     <Box
                         sx={{
@@ -100,6 +104,7 @@ const Login = () => {
                                 disabled={loading}
                                 validate={required()}
                                 fullWidth
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                         </Box>
                         <Box sx={{marginTop: '1em'}}>
@@ -110,6 +115,7 @@ const Login = () => {
                                 disabled={loading}
                                 validate={required()}
                                 fullWidth
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </Box>
                     </Box>

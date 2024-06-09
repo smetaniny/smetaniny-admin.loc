@@ -3,30 +3,27 @@ import {Fragment} from 'react';
 import {
     DatagridConfigurable,
     DateField,
-    SimpleList,
+    ArrayField,
     List,
-    useRecordContext,
+    SingleFieldList,
     TextField,
-    DateInput, Filter, SearchInput, SelectArrayInput, SelectInput, useListContext
+    DateInput,
+    Filter,
+    SearchInput,
+    ChipField,
 } from 'react-admin';
 import {Divider} from '@mui/material';
-import {ListActions, OrderFilters} from "../BaseList";
-
+import {ListActions, OrderFilters} from "../components/BaseList";
 
 const PermissionsList = (props) => {
+    const { permissions = [] } = props || {};
+    console.log('permissions', permissions); // Отладочное сообщение
     return <List
         {...props}
         filterDefaultValues={
             {
-                group: {distinct: true},
-                table: 'permissions',
+                // Поля по которым будет искать search
                 contentFields: [
-                    'name',
-                    'description',
-                    'group',
-                ],
-                selectFields: [
-                    'group',
                 ],
             }
         }
@@ -43,7 +40,11 @@ const PermissionsList = (props) => {
                 <TextField source="id" label="Индитификатор" />
                 <TextField source="group" label="Имя" />
                 <TextField source="description" label="Описание" />
-                <TextField source="roles[0].name" label="Имя роли" />
+                <ArrayField source="roles" label="Роли">
+                    <SingleFieldList>
+                        <ChipField source="name" />
+                    </SingleFieldList>
+                </ArrayField>
                 <DateField source="created_at" showTime label="Создание" />
                 <DateField source="updated_at" showTime label="Обновление" />
             </DatagridConfigurable>

@@ -1,10 +1,14 @@
-const user = JSON.parse(sessionStorage.getItem('user'));
-import {default as PermissionsList} from '../components/permissions/PermissionsList';
-import {default as PermissionsCreate} from '../components/permissions/PermissionsCreate';
-import {default as PermissionsEdit} from '../components/permissions/PermissionsEdit';
+import {default as PermissionsList} from '../resource/permissions/PermissionsList';
+import {default as PermissionsCreate} from '../resource/permissions/PermissionsCreate';
+import {default as PermissionsEdit} from '../resource/permissions/PermissionsEdit';
 
-export default {
-    list: user?.role?.permissions?.some((el) => el.name === 'PermissionsList') ? PermissionsList : null,
-    create: user?.role?.permissions?.some((el) => el.name === 'PermissionsCreate') ? PermissionsCreate : null,
-    edit: user?.role?.permissions?.some((el) => el.name === 'PermissionsEdit') ? PermissionsEdit : null,
+export default (permissions = []) => {
+    return {
+        list: permissions.some((el) => el.name === 'PermissionsList') ?
+            <PermissionsList permissions={permissions} /> : null,
+        create: permissions.some((el) => el.name === 'PermissionsCreate') ?
+            <PermissionsCreate permissions={permissions} /> : null,
+        edit: permissions.some((el) => el.name === 'PermissionsEdit') ?
+            <PermissionsEdit permissions={permissions} /> : null
+    };
 };

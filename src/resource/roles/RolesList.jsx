@@ -3,21 +3,32 @@ import {Fragment} from 'react';
 import {
     DatagridConfigurable,
     DateField,
+    ArrayField,
     List,
+    SingleFieldList,
     TextField,
+    DateInput,
+    Filter,
+    SearchInput,
+    ChipField,
 } from 'react-admin';
 import {Divider} from '@mui/material';
-import {ListActions, OrderFilters} from "../BaseList";
+import {ListActions, OrderFilters} from "../components/BaseList";
+import ListFilter from "../components/ListFilter";
 
-const PagesList = (props) => {
-
+const RolesList = (props) => {
+    const { permissions = [] } = props || {};
     return <List
         {...props}
-        filterDefaultValues={{status: 'ordered'}}
+        filterDefaultValues={
+            {
+                contentFields: [
+                ],
+            }
+        }
         sort={{field: 'created_at', order: 'DESC'}}
-        perPage={10}
-        filters={OrderFilters}
         actions={<ListActions />}
+        filters={<ListFilter />}
     >
         <Fragment>
             <Divider />
@@ -26,9 +37,7 @@ const PagesList = (props) => {
                 omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
             >
                 <TextField source="id" label="Индитификатор" />
-                <TextField source="content.menu_title" label="Псевдоним" />
-                <TextField source="content.slug" label="URL" />
-                <TextField source="ontent.parent_id" label="ID Родителя" />
+                <TextField source="name" label="Имя" />
                 <DateField source="created_at" showTime label="Создание" />
                 <DateField source="updated_at" showTime label="Обновление" />
             </DatagridConfigurable>
@@ -36,5 +45,4 @@ const PagesList = (props) => {
     </List>
 };
 
-
-export default PagesList;
+export default RolesList;

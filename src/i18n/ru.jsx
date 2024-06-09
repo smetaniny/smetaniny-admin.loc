@@ -150,6 +150,9 @@ const customRussianMessages = {
         permissions: {
             name: 'Разрешения',
         },
+        roles: {
+            name: 'Роли',
+        },
     },
 };
 

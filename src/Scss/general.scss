@@ -1,5 +1,3 @@
-
-
 /**
  * Загрузчики
  */
@@ -76,3 +74,80 @@ $borderColor: transparentize($greyWhite, .8);
         }
     }
 }
+
+.loginLink {
+    text-transform: uppercase;
+    color: $black;
+    min-width: 270px;
+    @include font-inter(bold, 24px, 1.5);
+}
+
+.css-1wlw2ct-RaSimpleFormIterator-root .RaSimpleFormIterator-line {
+    border-bottom: none !important;
+}
+
+// Перебор значений от 0 до 50
+@for $i from 0 through 50 {
+    // Классы для управления отступами (margin)
+    .m-#{$i} {
+        margin: #{$i}px !important;
+    }
+    // Отступ сверху (margin-top)
+    .mt-#{$i} {
+        margin-top: #{$i}px !important;
+    }
+    // Отступ снизу (margin-bottom)
+    .mb-#{$i} {
+        margin-bottom: #{$i}px !important;
+    }
+    // Отступ слева (margin-left)
+    .ml-#{$i} {
+        margin-left: #{$i}px !important;
+    }
+    // Отступ справа (margin-right)
+    .mr-#{$i} {
+        margin-right: #{$i}px !important;
+    }
+    // Отступ по горизонтали (margin по горизонтали)
+    .mx-#{$i} {
+        margin-left: #{$i}px!important;
+        margin-right: #{$i}px!important;
+    }
+    // Отступ по вертикали (margin по вертикали)
+    .my-#{$i} {
+        margin-top: #{$i}px!important;
+        margin-bottom: #{$i}!important
+    }
+
+    // Классы для управления внутренними отступами (padding)
+    .p-#{$i} {
+        padding: #{$i}px!important;
+    }
+    // Внутренний отступ сверху (padding-top)
+    .pt-#{$i} {
+        padding-top: #{$i}px!important;
+    }
+    // Внутренний отступ снизу (padding-bottom)
+    .pb-#{$i} {
+        padding-bottom: #{$i}px!important;
+    }
+    // Внутренний отступ слева (padding-left)
+    .pl-#{$i} {
+        padding-left: #{$i}px!important;
+    }
+    // Внутренний отступ справа (padding-right)
+    .pr-#{$i} {
+        padding-right: #{$i}px!important;
+    }
+    // Внутренний отступ по горизонтали (padding по горизонтали)
+    .px-#{$i} {
+        padding-left: #{$i}px!important;
+        padding-right: #{$i}px!important;
+    }
+    // Внутренний отступ по вертикали (padding по вертикали)
+    .py-#{$i} {
+        padding-top: #{$i}px!important;
+        padding-bottom: #{$i}px!important;
+    }
+}
+

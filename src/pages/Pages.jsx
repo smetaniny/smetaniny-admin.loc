@@ -1,10 +1,15 @@
-const user = JSON.parse(sessionStorage.getItem('user'));
-import {default as PagesList} from '../components/pages/PagesList';
-import {default as PagesCreate} from '../components/pages/PagesCreate';
-import {default as PagesEdit} from '../components/pages/PagesEdit';
+import {default as PagesList} from '../resource/pages/PagesList';
+import {default as PagesCreate} from '../resource/pages/PagesCreate';
+import {default as PagesEdit} from '../resource/pages/PagesEdit';
 
-export default {
-    list: user?.role?.permissions?.some((el) => el.name === 'PagesList') ? PagesList : null,
-    create: user?.role?.permissions?.some((el) => el.name === 'PagesCreate') ? PagesCreate : null,
-    edit: user?.role?.permissions?.some((el) => el.name === 'PagesEdit') ? PagesEdit : null,
+export default (permissions = []) => {
+    return {
+        list: permissions.some((el) => el.name === 'PagesList') ?
+            <PagesList permissions={permissions} /> : null,
+        create: permissions.some((el) => el.name === 'PagesCreate') ?
+            <PagesCreate permissions={permissions} /> : null,
+        edit: permissions.some((el) => el.name === 'PagesEdit') ?
+            <PagesEdit permissions={permissions} /> : null,
+    };
 };
+

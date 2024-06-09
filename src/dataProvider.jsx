@@ -86,7 +86,7 @@ export const dataProvider = {
         // Возвращаем отформатированные данные и общее количество записей
         return {
             data: formattedData,
-            total: parseInt(contentRange.split('/').pop(), 10),
+            total: parseInt(contentRange.split('/').pop(), 25),
         };
     },
 
