@@ -41,7 +41,9 @@ const customRussianMessages = {
             close_all: 'Закрыть все',
             open_all: 'Открыть все',
             toggle_all: 'Переключить все',
+            clear_array_input: 'Очистить',
         },
+
         boolean: {
             true: 'Да',
             false: 'Нет',
@@ -92,6 +94,7 @@ const customRussianMessages = {
             no: 'Нет',
             not_found: 'Вы ввели неправильный URL или перешли по неверной ссылке.',
             yes: 'Да',
+            clear_array_input: 'Подтвердите очистку данных',
         },
         navigation: {
             no_results: 'Результатов не найдено',
@@ -152,6 +155,9 @@ const customRussianMessages = {
         },
         roles: {
             name: 'Роли',
+        },
+        groupPermission: {
+            name: 'Группы разрешений',
         },
     },
 };

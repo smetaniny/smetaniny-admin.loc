@@ -82,6 +82,7 @@ const authProvider = (setShowLoader, setUserPermissions) => ({
      * Функция проверки аутентификации.
      */
     checkAuth: async () => {
+        // console.log('sessionStorage.getItem("token")', sessionStorage.getItem("token"));
         // Если токен есть, возвращаем успешный результат
         if (sessionStorage.getItem("token")) {
             // Выключение loader
@@ -105,7 +106,13 @@ const authProvider = (setShowLoader, setUserPermissions) => ({
             setShowLoader(false);
             return Promise.resolve(user.role.permissions);
         } else {
-            setShowLoader(false);
+            if (window.location.pathname !== '/login') {
+                // Перенаправление на страницу авторизации
+                setShowLoader(false); // Убедимся, что loader выключен до перенаправления
+                window.location.replace('/login');
+            } else {
+                setShowLoader(false);
+            }
             return Promise.reject();
         }
     },

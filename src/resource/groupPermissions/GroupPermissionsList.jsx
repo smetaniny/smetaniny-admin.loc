@@ -13,10 +13,10 @@ import {
     ChipField,
 } from 'react-admin';
 import {Divider} from '@mui/material';
-import {ListActions} from "../components/BaseList";
+import {ListActions, OrderFilters} from "../components/BaseList";
 
-const PermissionsList = (props) => {
-
+const GroupPermissionsList = (props) => {
+    const { permissions = [] } = props || {};
     return <List
         {...props}
         filterDefaultValues={
@@ -78,4 +78,4 @@ const PermissionsListFilter = (props) => {
     );
 };
 
-export default PermissionsList;
+export default GroupPermissionsList;

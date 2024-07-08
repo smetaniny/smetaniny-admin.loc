@@ -11,7 +11,7 @@ import Dashboard from "./Dashboard";
 import Login from "./Login";
 import i18nProvider from "./i18nProvider";
 import Pages from './pages/Pages.jsx';
-import Permissions from './pages/Permissions.jsx';
+import GroupPermissions from './pages/GroupPermissions.jsx';
 import Roles from './pages/Roles.jsx';
 import authProvider from './authProvider';
 import Loader from "./resource/components/Loader";
@@ -87,14 +87,25 @@ export const App = () => {
                 />
                 <Resource
                     // Установка имени ресурса
-                    name="permissions"
+                    name="groupPermission"
                     // Установка компонента списка
-                    list={Permissions(userPermissions).list}
+                    list={GroupPermissions(userPermissions).list}
                     // Установка компонента создания
-                    create={Permissions(userPermissions).create}
+                    create={GroupPermissions(userPermissions).create}
                     // Установка компонента редактирования
-                    edit={Permissions(userPermissions).edit}
+                    edit={GroupPermissions(userPermissions).edit}
                 />
+
+                {/*<Resource*/}
+                {/*    // Установка имени ресурса*/}
+                {/*    name="permissions"*/}
+                {/*    // Установка компонента списка*/}
+                {/*    list={Permissions(userPermissions).list}*/}
+                {/*    // Установка компонента создания*/}
+                {/*    create={Permissions(userPermissions).create}*/}
+                {/*    // Установка компонента редактирования*/}
+                {/*    edit={Permissions(userPermissions).edit}*/}
+                {/*/>*/}
             </Admin>
         </BrowserRouter>
         );

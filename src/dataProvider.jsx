@@ -81,14 +81,18 @@ export const dataProvider = {
         const data = Array.isArray(response.data) ? response.data : [response.data];
 
         // Форматируем данные, добавляя к каждому элементу идентификатор
-        const formattedData = data.map(item => ({...item, id: item.id ? item.id.toString() : null}));
+        const formattedData = data.map(item => ({ ...item, id: item.id ? item.id.toString() : null }));
+
+        // Используем правильное извлечение общего количества записей
+        const total = contentRange ? parseInt(contentRange.split('/').pop(), 10) : 0;
 
         // Возвращаем отформатированные данные и общее количество записей
         return {
             data: formattedData,
-            total: parseInt(contentRange.split('/').pop(), 25),
+            total: total,
         };
     },
+
 
     // Получение множества ресурсов
     getMany: async (resource, params) => {
