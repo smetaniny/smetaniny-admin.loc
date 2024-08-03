@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
+// eslint-disable-next-line no-unused-vars
+import React, {useState, useCallback} from 'react';
 import {Grid} from "@mui/material";
-import {TextInput,FileInput, FileField} from "react-admin";
-import { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+import {TextInput} from "react-admin";
+import {useDropzone} from 'react-dropzone';
+import PropTypes from 'prop-types'; // Импортируем prop-types для валидации пропсов
 
-const FileUploader = ({ onFileUpload }) => {
+const FileUploader = ({onFileUpload}) => {
     const onDrop = useCallback((acceptedFiles) => {
         // Передаем список принятых файлов родительскому компоненту
         onFileUpload(acceptedFiles);
     }, [onFileUpload]);
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
 
     return (
         <div {...getRootProps()} className={`dropzone ${isDragActive ? 'active' : ''}`}>
@@ -24,12 +25,16 @@ const FileUploader = ({ onFileUpload }) => {
     );
 };
 
+// Добавление валидации пропсов для FileUploader
+FileUploader.propTypes = {
+    onFileUpload: PropTypes.func.isRequired,
+};
 
-const TabThreeCard = ({error, flag}) => {
+const TabThreeCard = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
-
+    console.log('selectedFiles', selectedFiles);
     const handleFileUpload = (files) => {
-     console.log('files', files);
+        console.log('files', files);
         // Обрабатываем загруженные файлы
         setSelectedFiles(files);
     };

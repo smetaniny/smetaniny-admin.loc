@@ -5,10 +5,10 @@ import {default as GroupPermissionsEdit} from '../resource/groupPermissions/Grou
 export default (permissions = []) => {
     return {
         list: permissions.some((el) => el.name === 'GroupPermissionsList' || el.group_permission_id === 1) ?
-            <GroupPermissionsList permissions={permissions} /> : null,
+            <GroupPermissionsList permissions={permissions} /> : undefined,
         create: permissions.some((el) => el.name === 'GroupPermissionsCreate' || el.group_permission_id === 1) ?
-            <GroupPermissionsCreate permissions={permissions} /> : null,
+            <GroupPermissionsCreate permissions={permissions} /> : undefined,
         edit: permissions.some((el) => el.name === 'GroupPermissionsEdit' || el.group_permission_id === 1) ?
-            <GroupPermissionsEdit permissions={permissions} /> : null
+            <GroupPermissionsEdit permissions={permissions} /> : undefined
     };
 };

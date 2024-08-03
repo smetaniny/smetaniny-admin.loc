@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import {
     Edit,
@@ -6,7 +7,7 @@ import {
     SimpleFormIterator,
     ArrayInput
 } from 'react-admin';
-import {Grid, Tab, Tabs} from "@mui/material";
+import {Tab, Tabs} from "@mui/material";
 
 
 const RolesEdit = (props) => {
@@ -23,7 +24,7 @@ const RolesEdit = (props) => {
 };
 
 
-const TabOneRoles = () => { 
+const TabOneRoles = () => {
     return <>
         <TextInput disabled label="Id" source="id" fullWidth />
         <TextInput source="name" label="Имя" fullWidth />

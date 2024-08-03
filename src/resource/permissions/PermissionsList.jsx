@@ -1,4 +1,6 @@
-import * as React from 'react';
+// eslint-disable-next-line no-unused-vars
+import React from 'react';
+import PropTypes from 'prop-types';
 import {Fragment} from 'react';
 import {
     DatagridConfigurable,
@@ -22,8 +24,7 @@ const PermissionsList = (props) => {
         filterDefaultValues={
             {
                 // Поля по которым будет искать search
-                contentFields: [
-                ],
+                contentFields: [],
             }
         }
         sort={{field: 'created_at', order: 'DESC'}}
@@ -61,21 +62,25 @@ const PermissionsList = (props) => {
 const PermissionsListFilter = (props) => {
     // Разбираем пропсы, используя де структуризацию. Если filterValues не заданы в пропсах, то используем пустой объект по умолчанию.
     const {filterValues = {}, ...restProps} = props;
-
+    console.log('filterValues', filterValues);
     // Возвращаем компонент Filter с настроенными SearchInput и DateInput компонентами.
     return (
         <Filter {...restProps}>
             {/* Поле для поиска */}
             <SearchInput
-                source={`content`}
+                source="content"
                 alwaysOn
             />
             {/* Поле для выбора даты начала */}
-            <DateInput label={`От`} source="date_start" alwaysOn />
+            <DateInput label="От" source="date_start" alwaysOn />
             {/* Поле для выбора даты окончания */}
-            <DateInput label={`До`} source="date_end" alwaysOn />
+            <DateInput label="До" source="date_end" alwaysOn />
         </Filter>
     );
 };
 
+// Добавление валидации пропсов
+PermissionsListFilter.propTypes = {
+    filterValues: PropTypes.object,
+};
 export default PermissionsList;

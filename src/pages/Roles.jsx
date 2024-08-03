@@ -5,11 +5,11 @@ import {default as RolesEdit} from '../resource/roles/RolesEdit';
 export default (permissions = []) => {
     return {
         list: permissions.some((el) => el.name === 'RolesList') ?
-            <RolesList permissions={permissions} /> : null,
+            <RolesList permissions={permissions} /> : undefined,
         create: permissions.some((el) => el.name === 'RolesCreate') ?
-            <RolesCreate permissions={permissions} /> : null,
+            <RolesCreate permissions={permissions} /> : undefined,
         edit: permissions.some((el) => el.name === 'RolesEdit') ?
-            <RolesEdit permissions={permissions} /> : null,
+            <RolesEdit permissions={permissions} /> : undefined,
     };
 };
 

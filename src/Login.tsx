@@ -82,7 +82,7 @@ const Login = () => {
                         justifyContent: 'start',
                     }}
                     >
-                        <a href={"https://smetaniny.ru/"} target={"_blank"} className="loginLink">
+                        <a href={"https://smetaniny.ru/"} target={"_blank"} className="loginLink" rel="noreferrer">
                             Smetaniny
                         </a>
                     </Box>

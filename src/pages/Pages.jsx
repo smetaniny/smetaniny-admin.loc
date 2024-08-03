@@ -5,11 +5,11 @@ import {default as PagesEdit} from '../resource/pages/PagesEdit';
 export default (permissions = []) => {
     return {
         list: permissions.some((el) => el.name === 'PagesList') ?
-            <PagesList permissions={permissions} /> : null,
+            <PagesList permissions={permissions} /> : undefined,
         create: permissions.some((el) => el.name === 'PagesCreate') ?
-            <PagesCreate permissions={permissions} /> : null,
+            <PagesCreate permissions={permissions} /> : undefined,
         edit: permissions.some((el) => el.name === 'PagesEdit') ?
-            <PagesEdit permissions={permissions} /> : null,
+            <PagesEdit permissions={permissions} /> : undefined,
     };
 };
 

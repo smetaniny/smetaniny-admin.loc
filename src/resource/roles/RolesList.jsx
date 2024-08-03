@@ -1,23 +1,17 @@
-import * as React from 'react';
+// eslint-disable-next-line no-unused-vars
+import React from 'react';
 import {Fragment} from 'react';
 import {
     DatagridConfigurable,
     DateField,
-    ArrayField,
     List,
-    SingleFieldList,
     TextField,
-    DateInput,
-    Filter,
-    SearchInput,
-    ChipField,
 } from 'react-admin';
 import {Divider} from '@mui/material';
-import {ListActions, OrderFilters} from "../components/BaseList";
+import {ListActions} from "../components/BaseList";
 import ListFilter from "../components/ListFilter";
 
 const RolesList = (props) => {
-    const { permissions = [] } = props || {};
     return <List
         {...props}
         filterDefaultValues={
