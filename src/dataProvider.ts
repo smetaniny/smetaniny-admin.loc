@@ -99,28 +99,37 @@ export const dataProvider: DataProvider = {
         params: GetListParams & QueryFunctionContext // Параметры для запроса списка записей
     ): Promise<GetListResult<RecordType>> => { // Возвращает Promise, который разрешается в результат типа GetListResult с обобщённым типом RecordType
 
-        const queryParam = { // Формирует параметры запроса
-            pagination: JSON.stringify(params.pagination), // Преобразуем параметры пагинации в строку JSON
-            sort: JSON.stringify(params.sort), // Преобразуем параметры сортировки в строку JSON
-            filter: JSON.stringify(params.filter),  // Преобразуем фильтры в строку JSON
+        // Формирует параметры запроса
+        const queryParam = {
+            // Преобразуем параметры пагинации в строку JSON
+            pagination: JSON.stringify(params.pagination),
+            // Преобразуем параметры сортировки в строку JSON
+            sort: JSON.stringify(params.sort),
+            // Преобразуем фильтры в строку JSON
+            filter: JSON.stringify(params.filter),
         };
 
-        const url = `${resource}?${queryString.stringify(queryParam)}`;  // Формируем URL для запроса, включая параметры
+        // Формируем URL для запроса, включая параметры
+        const url = `${resource}?${queryString.stringify(queryParam)}`;
+        // Выполняем запрос к API
+        const responseClient = await apiClient.get(url);
+        // Получаем заголовки ответа
+        const headers = responseClient.headers;
+        // Извлекаем значение заголовка `content-range`
+        const contentRange = headers['content-range'] as string | undefined;
+        // Обрабатываем данные из ответа
+        const data = Array.isArray(responseClient.data) ? responseClient.data : [responseClient.data];
 
-        const responseClient = await apiClient.get(url);  // Выполняем запрос к API
-
-        const headers = responseClient.headers; // Получаем заголовки ответа
-
-        const contentRange = headers['content-range'] as string | undefined; // Извлекаем значение заголовка `content-range`
-
-        const data = Array.isArray(responseClient.data) ? responseClient.data : [responseClient.data]; // Обрабатываем данные из ответа
-
-        const formattedData = data.map((item: DataResponse) => ({ // Форматируем данные, преобразуя `id` в строку
+        // Форматируем данные, преобразуя `id` в строку
+        const formattedData = data.map((item: DataResponse) => ({
             ...item, // Копируем все свойства из исходного объекта
             id: item.id ? item.id.toString() : null // Преобразуем `id` в строку, если он существует
         })) as unknown as RecordType[];  // Приводим тип данных к типу `RecordType[]`, используя промежуточный тип `unknown`
 
-        const total = contentRange ? parseInt(contentRange.split('/').pop() || '0', 10) : 0; // Вычисляем общее количество записей из заголовка `content-range`, если он присутствует
+        // Вычисляем общее количество записей из заголовка `content-range`, если он присутствует
+        const total = contentRange ?
+            parseInt(contentRange.split('/').pop() || '0', 10) :
+            0;
 
         // Возвращаем результат с отформатированными данными и общим количеством записей
         return {
@@ -143,13 +152,14 @@ export const dataProvider: DataProvider = {
         params: GetManyParams<RecordType> // Параметры для запроса, типизированные RecordType
     ): Promise<GetManyResult<RecordType>> => { // Возвращает Promise, который разрешается в результат типа GetManyResult с обобщённым типом RecordType
 
-        const url = `${resource}?${queryString.stringify({id: params.ids})}`; // Формирует URL для запроса, используя идентификаторы из params
-
-        const response = await apiClient.get(url);  // Выполняет GET-запрос по сформированному URL
-
-        const data = Array.isArray(response.data) ? response.data : [response.data];  // Приводит данные к массиву, если они не являются массивом
-
-        const formattedData = data.map((item: DataResponse) => ({  // Форматирует данные, преобразуя id в строку
+        // Формирует URL для запроса, используя идентификаторы из params
+        const url = `${resource}?${queryString.stringify({id: params.ids})}`;
+        // Выполняет GET-запрос по сформированному URL
+        const response = await apiClient.get(url);
+        // Приводит данные к массиву, если они не являются массивом
+        const data = Array.isArray(response.data) ? response.data : [response.data];
+        // Форматирует данные, преобразуя id в строку
+        const formattedData = data.map((item: DataResponse) => ({
             ...item, // Копирует все свойства объекта
             id: item.id ? item.id.toString() : null // Преобразует id в строку, если оно есть, иначе ставит null
         })) as unknown as RecordType[]; // Приведение типа данных к RecordType[]
@@ -173,15 +183,16 @@ export const dataProvider: DataProvider = {
         params: GetOneParams<RecordType> // Параметры запроса, включающие идентификатор записи
     ): Promise<GetOneResult<RecordType>> => { // Возвращаемый результат типа GetOneResult<RecordType>
 
-        const url = `${resource}/${params.id}`; // Формируем URL для запроса записи по идентификатору
+        // Формируем URL для запроса записи по идентификатору
+        const url = `${resource}/${params.id}`;
+        // Выполняем GET-запрос и получаем данные
+        const {data} = await apiClient.get(url);
 
-        const {data} = await apiClient.get(url); // Выполняем GET-запрос и получаем данные
-
+        // Возвращаем данные записи
         return {
-            data, // Возвращаем данные записи
+            data,
         };
     },
-
 
     /**
      * Асинхронная функция для создания новой записи.
@@ -197,12 +208,14 @@ export const dataProvider: DataProvider = {
         params: CreateParams<RecordType> // Параметры запроса, включая данные для создания записи
     ): Promise<CreateResult<RecordType & { id: Identifier }>> => { // Возвращаемый результат с добавленным полем 'id'
 
-        const url = `${resource}`; // Формируем URL для запроса на создание записи
+        // Формируем URL для запроса на создание записи
+        const url = `${resource}`;
+        // Выполняем POST-запрос и получаем данные
+        const {data} = await apiClient.post(url, params.data);
 
-        const {data} = await apiClient.post(url, params.data); // Выполняем POST-запрос и получаем данные
-
+        // Возвращаем данные записи с добавленным полем 'id'
         return {
-            data: {...data, id: data.id.toString()} as RecordType & { id: Identifier }, // Возвращаем данные записи с добавленным полем 'id'
+            data: {...data, id: data.id.toString()} as RecordType & { id: Identifier },
         };
     },
 
@@ -220,12 +233,14 @@ export const dataProvider: DataProvider = {
         params: UpdateParams<RecordType> // Параметры запроса, включая идентификатор записи и данные для обновления
     ): Promise<UpdateResult<RecordType>> => { // Возвращаемый результат с обновлёнными данными записи
 
-        const url = `${resource}/${params.id}`; // Формируем URL для запроса на обновление записи
+        // Формируем URL для запроса на обновление записи
+        const url = `${resource}/${params.id}`;
+        // Выполняем PUT-запрос и получаем обновлённые данные
+        const {data} = await apiClient.put(url, params.data);
 
-        const {data} = await apiClient.put(url, params.data); // Выполняем PUT-запрос и получаем обновлённые данные
-
+        // Возвращаем обновлённые данные записи
         return {
-            data, // Возвращаем обновлённые данные записи
+            data,
         };
     },
 
@@ -234,20 +249,22 @@ export const dataProvider: DataProvider = {
      * Обобщённый тип RecordType по умолчанию является DataResponse.
      *
      * @param resource Название ресурса, из которого нужно удалить запись.
-     * @param params Параметры запроса , включая идентификатор записи и предыдущие данные.
-     * @returns Возвращает Promise     , который разрешается в объект с данными предыдущей записи или пустым объектом.
+     * @param params Параметры запроса, включая идентификатор записи и предыдущие данные.
+     * @returns Возвращает Promise, который разрешается в объект с данными предыдущей записи или пустым объектом.
      */
     delete: async <RecordType extends RaRecord = DataResponse>(
-        resource: string,                                           // Название ресурса
-        params: DeleteParams<RecordType>                            // Параметры запроса, включая идентификатор записи и предыдущие данные
-    ): Promise<DeleteResult<RecordType>> => {                       // Возвращаемый результат с данными предыдущей записи
+        resource: string, // Название ресурса
+        params: DeleteParams<RecordType> // Параметры запроса, включая идентификатор записи и предыдущие данные
+    ): Promise<DeleteResult<RecordType>> => { // Возвращаемый результат с данными предыдущей записи
 
-        const url = `${resource}/${params.id}`;              // Формируем URL для запроса на удаление записи
+        // Формируем URL для запроса на удаление записи
+        const url = `${resource}/${params.id}`;
+        // Выполняем DELETE-запрос для удаления записи
+        await apiClient.delete(url);
 
-        await apiClient.delete(url);                                // Выполняем DELETE-запрос для удаления записи
-
+        // Возвращаем данные предыдущей записи или пустой объект
         return {
-            data: params.previousData || {} as RecordType,          // Возвращаем данные предыдущей записи или пустой объект
+            data: params.previousData || {} as RecordType,
         };
     },
 
@@ -270,8 +287,9 @@ export const dataProvider: DataProvider = {
             await apiClient.delete(url); // Выполняем DELETE-запрос для удаления записи
         }));
 
+        // Возвращаем массив идентификаторов удалённых записей
         return {
-            data: params.ids, // Возвращаем массив идентификаторов удалённых записей
+            data: params.ids,
         };
     },
 
@@ -297,16 +315,12 @@ export const dataProvider: DataProvider = {
 
         // Формируем URL для запроса
         const url = `${resource}?${queryString.stringify(query)}`;
-
         // Выполняем GET-запрос для получения данных
         const response = await apiClient.get(url);
-
         // Извлекаем заголовки из ответа
         const headers = response.headers;
-
         // Получаем заголовок 'content-range', который может содержать общее количество записей
         const contentRange = headers['content-range'] as string | undefined;
-
         // Форматируем полученные данные
         const data = Array.isArray(response.data) ? response.data : [response.data]; // Убедимся, что данные представляют собой массив
 
