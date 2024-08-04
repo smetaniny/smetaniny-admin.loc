@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, {useEffect, useState} from "react";
 import "./Scss/app.scss"
 import {
     Admin,
@@ -5,8 +7,6 @@ import {
 } from "react-admin";
 import {BrowserRouter} from 'react-router-dom';
 import {dataProvider} from "./dataProvider";
-// eslint-disable-next-line no-unused-vars
-import React, {useEffect, useState} from "react";
 import {smetaninyTheme} from "./layout/Themes";
 import Dashboard from "./Dashboard";
 import Login from "./Login";

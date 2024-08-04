@@ -1,7 +1,7 @@
-import * as React from 'react';
-import {useState} from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {NavLink, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import {
     Button,

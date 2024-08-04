@@ -5,10 +5,10 @@ import {default as PermissionsEdit} from '../resource/permissions/PermissionsEdi
 export default (permissions = []) => {
     return {
         list: permissions.some((el) => el.name === 'PermissionsList') ?
-            <PermissionsList permissions={permissions} /> : null,
+            <PermissionsList permissions={permissions} /> : undefined,
         create: permissions.some((el) => el.name === 'PermissionsCreate') ?
-            <PermissionsCreate permissions={permissions} /> : null,
+            <PermissionsCreate permissions={permissions} /> : undefined,
         edit: permissions.some((el) => el.name === 'PermissionsEdit') ?
-            <PermissionsEdit permissions={permissions} /> : null
+            <PermissionsEdit permissions={permissions} /> : undefined
     };
 };

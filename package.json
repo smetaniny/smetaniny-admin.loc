@@ -13,10 +13,7 @@
     "@mui/material": "^5.16.6",
     "axios": "^1.7.3",
     "prop-types": "^15.8.1",
-    "query-string": "^9.1.0",
-    "ra-core": "^5.1.1",
-    "ra-data-fakerest": "^5.1.1",
-    "ra-language-english": "^5.1.1",
+    "ra-data-fakerest": "^5.1.0",
     "react": "^18.3.0",
     "react-admin": "^5.1.0",
     "react-dom": "^18.3.0"
@@ -35,6 +32,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "jsdom": "^23.1.0",
     "prettier": "^2.8.8",
+    "sass": "^1.77.8",
     "typescript": "^5.1.6",
     "vite": "^4.3.9",
     "vitest": "^1.1.3"

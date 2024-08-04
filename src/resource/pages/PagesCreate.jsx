@@ -1,5 +1,5 @@
-// eslint-disable-next-line no-unused-vars
-import * as React from "react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React from "react";
 
 const PagesCreate = () => {
 

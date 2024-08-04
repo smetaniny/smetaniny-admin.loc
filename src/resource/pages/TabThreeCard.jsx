@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, {useState, useCallback} from 'react';
 import {Grid} from "@mui/material";
 import {TextInput} from "react-admin";

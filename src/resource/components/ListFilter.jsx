@@ -1,4 +1,5 @@
 import {DateInput, Filter, SearchInput} from "react-admin";
+import PropTypes from 'prop-types';
 
 /**
  * Компонент для фильтрации
@@ -9,6 +10,8 @@ import {DateInput, Filter, SearchInput} from "react-admin";
 const ListFilter = (props) => {
     // Разбираем пропсы, используя де структуризацию. Если filterValues не заданы в пропсах, то используем пустой объект по умолчанию.
     const {filterValues = {}, ...restProps} = props;
+
+    console.log('filterValues', filterValues);
 
     // Возвращаем компонент Filter с настроенными SearchInput и DateInput компонентами.
     return (
@@ -25,5 +28,11 @@ const ListFilter = (props) => {
         </Filter>
     );
 };
+
+// Добавление валидации пропсов
+ListFilter.propTypes = {
+    filterValues: PropTypes.object,
+};
+
 
 export default ListFilter;

@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Card, CardContent, Tab, Tabs } from "@mui/material";

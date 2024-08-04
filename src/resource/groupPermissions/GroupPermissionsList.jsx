@@ -1,6 +1,7 @@
-import * as React from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Fragment } from 'react';
+import {Fragment} from 'react';
 import {
     DatagridConfigurable,
     DateField,
@@ -13,8 +14,8 @@ import {
     SearchInput,
     ChipField,
 } from 'react-admin';
-import { Divider } from '@mui/material';
-import { ListActions } from "../components/BaseList";
+import {Divider} from '@mui/material';
+import {ListActions} from "../components/BaseList";
 
 const GroupPermissionsList = (props) => {
     return (
@@ -24,7 +25,7 @@ const GroupPermissionsList = (props) => {
                 // Поля по которым будет искать search
                 contentFields: [],
             }}
-            sort={{ field: 'created_at', order: 'DESC' }}
+            sort={{field: 'created_at', order: 'DESC'}}
             actions={<ListActions />}
             filters={<PermissionsListFilter />}
         >
@@ -58,8 +59,8 @@ const GroupPermissionsList = (props) => {
  */
 const PermissionsListFilter = (props) => {
     // Разбираем пропсы, используя деструктуризацию. Если filterValues не заданы в пропсах, то используем пустой объект по умолчанию.
-    const { filterValues = {}, ...restProps } = props;
-console.log('')
+    const {filterValues = {}, ...restProps} = props;
+    console.log('filterValues', filterValues);
     // Возвращаем компонент Filter с настроенными SearchInput и DateInput компонентами.
     return (
         <Filter {...restProps}>

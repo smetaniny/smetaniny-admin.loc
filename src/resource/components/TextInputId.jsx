@@ -1,6 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
 import {Grid} from "@mui/material";
-import {TextInput, useRecordContext} from "react-admin";
+import {TextInput} from "react-admin";
+import PropTypes from 'prop-types';
 
 const TextInputId = ({flag}) => {
     if (flag !== "create") {
@@ -15,5 +17,10 @@ const TextInputId = ({flag}) => {
         return null;
     }
 };
+
+TextInputId.propTypes = {
+    flag: PropTypes.bool,
+};
+
 
 export default TextInputId;

@@ -1,4 +1,5 @@
-import * as React from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React from 'react';
 import {
     Edit,
     SimpleForm,
@@ -10,7 +11,6 @@ import {
 import SectionTitle from "../components/SectionTitle";
 
 const GroupPermissionsEdit = (props) => {
-    const { record } = props;
 
     return (
         <Edit {...props}>

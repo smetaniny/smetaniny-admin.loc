@@ -1,8 +1,6 @@
-let white = '#F8F8F8';
-let black = '#181818';
-let greyWhite = '#9FA5AB';
-let greyBlack = '#555555';
-
+const white = '#F8F8F8';
+const black = '#181818';
+const greyWhite = '#9FA5AB';
 
 export const smetaninyTheme = {
     typography: {

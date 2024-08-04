@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
 import {
     CreateButton,
@@ -9,22 +10,23 @@ import {
 } from "react-admin";
 
 const OrderFilters = [
-    <SearchInput source="q" name={``} alwaysOn />,
+    <SearchInput key="search-input" source="q" alwaysOn />,
 ];
 
 const ListActions = () => {
-    const listContext = useListContext();
-    if (listContext.data !== undefined && listContext.data.length === 0) {
-        return <TopToolbar>
+    const { data } = useListContext();
+
+    return (
+        <TopToolbar>
+            {data && data.length > 0 && (
+                <>
+                    <SelectColumnsButton />
+                    <ExportButton />
+                </>
+            )}
             <CreateButton />
         </TopToolbar>
-    } else {
-        return <TopToolbar>
-            <SelectColumnsButton />
-            <ExportButton />
-            <CreateButton />
-        </TopToolbar>
-    }
+    );
 };
 
-export {OrderFilters, ListActions}
+export { OrderFilters, ListActions };

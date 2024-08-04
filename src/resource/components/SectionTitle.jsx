@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const SectionTitle = ({ children }) => {
     return (
@@ -6,6 +8,10 @@ const SectionTitle = ({ children }) => {
             {children}
         </h2>
     );
+};
+
+SectionTitle.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
 export default SectionTitle;
