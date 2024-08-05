@@ -76,7 +76,7 @@ apiClient.interceptors.response.use(
             }
             // Если статус ответа не равен 200, выбрасываем ошибку с сообщением из ответа
             if (error.response.status !== 200) {
-                throw new Error(error.response.data.errors);
+                throw new Error(error.response.data.errors.message);
             }
         }
         // Возвращаем отклонённый промис с ошибкой

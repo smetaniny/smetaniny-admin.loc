@@ -8,18 +8,10 @@ import {
     TextField,
 } from 'react-admin';
 import {Divider} from '@mui/material';
-import {ListActions, OrderFilters} from "../components/BaseList";
 
 const PagesList = (props) => {
 
-    return <List
-        {...props}
-        filterDefaultValues={{status: 'ordered'}}
-        sort={{field: 'created_at', order: 'DESC'}}
-        perPage={10}
-        filters={OrderFilters}
-        actions={<ListActions />}
-    >
+    return <List {...props}>
         <Fragment>
             <Divider />
             <DatagridConfigurable
