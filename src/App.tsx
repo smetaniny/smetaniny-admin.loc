@@ -38,7 +38,6 @@ export const App = () => {
             })
             .catch(e => {
                 console.error('e', e);
-                console.error("Необходима авторизация!");
             });
     }, []);
 

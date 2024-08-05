@@ -41,6 +41,7 @@ apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         // Извлекаем токен из sessionStorage
         const token = sessionStorage.getItem('token');
+        console.log('token', token);
         // Если токен существует, добавляем его в заголовки запроса
         if (token) {
             // Если заголовки отсутствуют, создаём их

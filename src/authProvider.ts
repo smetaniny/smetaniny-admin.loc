@@ -11,7 +11,7 @@ interface ErrorDetail {
 }
 
 const authProvider = (setShowLoader: SetShowLoader, setUserPermissions: SetUserPermissions) => ({
-    login: async ({ username, password }: { username: string; password: string }) => {
+    login: async ({username, password}: { username: string; password: string }) => {
         try {
             const response = await axios.post<AuthResult>(AUTH_URL_API, {
                 email: username,
@@ -23,7 +23,7 @@ const authProvider = (setShowLoader: SetShowLoader, setUserPermissions: SetUserP
             });
 
             const result = response.data;
-            const { status = false, data: { user, token = "" } } = result;
+            const {status = false, data: {user, token = ""}} = result;
 
             if (status) {
                 sessionStorage.setItem('token', token);
@@ -34,24 +34,21 @@ const authProvider = (setShowLoader: SetShowLoader, setUserPermissions: SetUserP
                 return Promise.reject(new Error('Ошибка аутентификации: Неверные учетные данные'));
             }
         } catch (error: unknown) {
-            // Проверяем, что ошибка является экземпляром AxiosError
             if (axios.isAxiosError(error)) {
-                // Проверка и приведение типа ошибки
-                if (axios.isAxiosError(error)) {
-                    const axiosError = error as AxiosError;
-                    if (axiosError.response && axiosError.response.data) {
-                        const errorData = axiosError.response.data as { errors?: ErrorDetail };
-
-                        // Проверка на наличие errors
-                        if (errorData.errors) {
-                            const errorMessage = Object.keys(errorData.errors)
-                                .map(key => `${key}: ${errorData.errors?.[key].join(', ')}`)
-                                .join('; ');
-                            throw new Error(errorMessage);
-                        }
+                const axiosError = error as AxiosError;
+                if (axiosError.response && axiosError.response.data) {
+                    const errorData = axiosError.response.data as { errors?: ErrorDetail };
+                    if (errorData.errors) {
+                        const errorMessage = Object.keys(errorData.errors)
+                            .map(key => `${key}: ${errorData.errors?.[key].join(', ')}`)
+                            .join('; ');
+                        throw new Error(errorMessage);
                     }
                 }
+                // Если errorData.errors нет, выводим текст ошибки
+                throw new Error(axiosError.message || 'Ошибка аутентификации: Неизвестная ошибка');
             }
+            // Для не Axios ошибок
             throw new Error('Ошибка аутентификации: Не удалось выполнить запрос к серверу');
         }
     },
@@ -79,20 +76,23 @@ const authProvider = (setShowLoader: SetShowLoader, setUserPermissions: SetUserP
 
     getPermissions: () => {
         const persistedUser = sessionStorage.getItem("user");
-        const user = persistedUser ? JSON.parse(persistedUser) : [];
+        const user = persistedUser ? JSON.parse(persistedUser) : null;
+
         if (user && user.role && user.role.permissions) {
             setShowLoader(false);
             return Promise.resolve(user.role.permissions);
         } else {
+            setShowLoader(false);
+
             if (window.location.pathname !== '/login') {
-                setShowLoader(false);
                 window.location.replace('/login');
-            } else {
-                setShowLoader(false);
             }
-            return Promise.reject();
+
+            // Возвращаем промис с отклоненной ошибкой
+            return Promise.reject('Необходима авторизация. Перенаправление на страницу входа.');
         }
     },
+
 
     getIdentity: () => {
         const persistedUser = sessionStorage.getItem("user");
