@@ -67,7 +67,9 @@ const authProvider = (setShowLoader: SetShowLoader, setUserPermissions: SetUserP
 
     checkAuth: async () => {
         if (sessionStorage.getItem("token")) {
-            setShowLoader(false);
+            setTimeout(() => {
+                setShowLoader(false);
+            }, 3000);
             return Promise.resolve();
         } else {
             return Promise.reject();

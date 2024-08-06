@@ -3,7 +3,7 @@ import React, {useState, useCallback} from 'react';
 import {Grid} from "@mui/material";
 import {TextInput} from "react-admin";
 import {useDropzone} from 'react-dropzone';
-import PropTypes from 'prop-types'; // Импортируем prop-types для валидации пропсов
+import PropTypes from 'prop-types';
 
 const FileUploader = ({onFileUpload}) => {
     const onDrop = useCallback((acceptedFiles) => {
