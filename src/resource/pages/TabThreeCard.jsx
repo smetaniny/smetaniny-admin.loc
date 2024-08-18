@@ -4,6 +4,7 @@ import {Grid} from "@mui/material";
 import {TextInput} from "react-admin";
 import {useDropzone} from 'react-dropzone';
 import PropTypes from 'prop-types';
+import TinyMCEEditor from "@/resource/components/TinyMCEEditor";
 
 const FileUploader = ({onFileUpload}) => {
     const onDrop = useCallback((acceptedFiles) => {

@@ -2,9 +2,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Card, CardContent, Tab, Tabs } from "@mui/material";
-import TabOneCard from "./TabOneCard";
+// import TabOneCard from "./TabOneCard";
 import TabThreeCard from "./TabThreeCard";
 import TabFourCard from "./TabFourCard";
+import TinyMCEEditor from "@/resource/components/TinyMCEEditor";
 
 const PageCard = ({ error, flag, setValue, value, handleChange, ...props }) => {
     return (
@@ -16,9 +17,10 @@ const PageCard = ({ error, flag, setValue, value, handleChange, ...props }) => {
                         <Tab label="Соцсети" />
                         <Tab label="Настройка страницы" />
                     </Tabs>
-                    {value === 0 && (
-                        <TabOneCard error={error} flag={flag} setValue={setValue} {...props} />
-                    )}
+                    <TinyMCEEditor source="content" />
+                    {/*{value === 0 && (*/}
+                    {/*    <TabOneCard error={error} flag={flag} setValue={setValue} {...props} />*/}
+                    {/*)}*/}
                     {value === 1 && (
                         <TabThreeCard error={error} flag={flag} setValue={setValue} {...props} />
                     )}

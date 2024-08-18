@@ -187,8 +187,8 @@ export const dataProvider: DataProvider = {
         // Формируем URL для запроса записи по идентификатору
         const url = `${resource}/${params.id}`;
         // Выполняем GET-запрос и получаем данные
-        const {data} = await apiClient.get(url);
-
+        const response = await apiClient.get(url);
+        const { data } = response;
         // Возвращаем данные записи
         return {
             data,

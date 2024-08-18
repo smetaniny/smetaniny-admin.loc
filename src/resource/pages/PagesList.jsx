@@ -10,7 +10,6 @@ import {
 import {Divider} from '@mui/material';
 
 const PagesList = (props) => {
-
     return <List {...props}>
         <Fragment>
             <Divider />
