@@ -18,7 +18,7 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({ input = {} }) => {
 
     return (
         <Editor
-            apiKey='' // Замените на ваш API ключ
+            apiKey='fcwvklb57jjcy5gy0qtah4nfll6edtgdqsvxqge71xzf2phe' // Замените на ваш API ключ
             value={input.value}
             init={{
                 plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
