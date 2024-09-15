@@ -1,3 +1,3 @@
 export interface DataResponse {
-    id: number
+  id: number;
 }

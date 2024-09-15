@@ -2,9 +2,7 @@
 import React from "react";
 
 const GroupPermissionsCreate = () => {
-
-    return <></>
+  return <></>;
 };
-
 
 export default GroupPermissionsCreate;

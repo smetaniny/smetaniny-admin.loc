@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  # Действия будут запускаться при пуше в ветку main
+  push:
+    branches:
+      - main
+  # Действия также будут запускаться при создании pull request в ветку main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    # Задачи будут выполняться на последней версии Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        # Используем действие для проверки кода из репозитория
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        # Настраиваем Node.js
+        uses: actions/setup-node@v3
+        with:
+          # Указываем версию Node.js, которую нужно использовать
+          node-version: '18'
+
+      - name: Install dependencies
+        # Устанавливаем зависимости проекта
+        run: npm install
+
+      - name: Run type-check
+        # Запускаем проверку типов
+        run: npm run type-check
+
+      - name: Run lint
+        # Запускаем линтер для проверки кода
+        run: npm run lint
+
+      - name: Run format
+        # Запускаем форматирование кода
+        run: npm run format
+
+      - name: Run tests
+        # Запускаем тесты
+        run: npm test

@@ -22,6 +22,8 @@
     "types": ["vitest/globals"]
   },
   "include": [
-    "src"
+    "src",
+    "vite.config.ts",
+    "setupTests.ts"
   ]
 }
