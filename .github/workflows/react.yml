@@ -1,14 +1,12 @@
-name: CI
+name: React
 
 on:
-  # Действия будут запускаться при пуше в ветку main
   push:
-    branches:
-      - main
-  # Действия также будут запускаться при создании pull request в ветку main
+    # Запуск рабочего процесса при коммите в ветку "master"
+    branches: [ "master" ]
   pull_request:
-    branches:
-      - main
+    # Запуск рабочего процесса при создании pull request в ветку "master"
+    branches: [ "master" ]
 
 jobs:
   build:
