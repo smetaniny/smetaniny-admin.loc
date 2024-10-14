@@ -14,7 +14,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 const Dashboard: React.FC = () => {
   // Типизация для useMediaQuery
   const isXSmall = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down("sm")
+    theme.breakpoints.down("sm"),
   );
   const isSmall = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
 

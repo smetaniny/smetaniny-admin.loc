@@ -32,7 +32,7 @@ export const updateMenuItem = createAsyncThunk(
     } catch (error) {
       return rejectWithValue("Failed to update menu item");
     }
-  }
+  },
 );
 
 const menuSlice = createSlice({

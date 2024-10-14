@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState } from "react";
 import {
   Edit,
@@ -7,8 +6,8 @@ import {
   useNotify,
   useRecordContext,
 } from "react-admin";
-import { dataProvider } from "@/dataProvider";
-import PageCard from "@/resource/pages/PageCard";
+import { dataProvider } from "../../dataProvider";
+import PageCard from "../../resource/pages/PageCard";
 
 const PagesEdit = () => {
   const [value, setValue] = useState(0);

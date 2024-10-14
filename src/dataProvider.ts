@@ -57,15 +57,14 @@ apiClient.interceptors.request.use(
       // Устанавливаем токен для GraphQL
       (config.headers as AxiosRequestHeaders)["x-graphql-token"] = token;
       // Устанавливаем токен для авторизации
-      (config.headers as AxiosRequestHeaders)[
-        "Authorization"
-      ] = `Bearer ${token}`;
+      (config.headers as AxiosRequestHeaders)["Authorization"] =
+        `Bearer ${token}`;
     }
     // Возвращаем конфигурацию запроса с обновлёнными заголовками
     return config;
   },
   // Функция для обработки ошибок запроса
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Интерцептор ответа для обработки ошибок
@@ -89,7 +88,7 @@ apiClient.interceptors.response.use(
     }
     // Возвращаем отклонённый промис с ошибкой
     return Promise.reject(error);
-  }
+  },
 );
 
 // Конфигурация dataProvider
@@ -104,7 +103,7 @@ export const dataProvider: DataProvider = {
    */
   getList: async <RecordType extends RaRecord = DataResponse>(
     resource: string, // Имя ресурса
-    params: GetListParams & QueryFunctionContext // Параметры для запроса списка записей
+    params: GetListParams & QueryFunctionContext, // Параметры для запроса списка записей
   ): Promise<GetListResult<RecordType>> => {
     // Возвращает Promise, который разрешается в результат типа GetListResult с обобщённым типом RecordType
 
@@ -160,7 +159,7 @@ export const dataProvider: DataProvider = {
    */
   getMany: async <RecordType extends RaRecord = DataResponse>(
     resource: string, // Название ресурса
-    params: GetManyParams<RecordType> // Параметры для запроса, типизированные RecordType
+    params: GetManyParams<RecordType>, // Параметры для запроса, типизированные RecordType
   ): Promise<GetManyResult<RecordType>> => {
     // Возвращает Promise, который разрешается в результат типа GetManyResult с обобщённым типом RecordType
 
@@ -192,7 +191,7 @@ export const dataProvider: DataProvider = {
    */
   getOne: async <RecordType extends RaRecord = DataResponse>(
     resource: string, // Название ресурса
-    params: GetOneParams<RecordType> // Параметры запроса, включающие идентификатор записи
+    params: GetOneParams<RecordType>, // Параметры запроса, включающие идентификатор записи
   ): Promise<GetOneResult<RecordType>> => {
     // Возвращаемый результат типа GetOneResult<RecordType>
 
@@ -218,7 +217,7 @@ export const dataProvider: DataProvider = {
    */
   create: async <RecordType extends Omit<RaRecord, "id"> = DataResponse>(
     resource: string, // Название ресурса
-    params: CreateParams<RecordType> // Параметры запроса, включая данные для создания записи
+    params: CreateParams<RecordType>, // Параметры запроса, включая данные для создания записи
   ): Promise<CreateResult<RecordType & { id: Identifier }>> => {
     // Возвращаемый результат с добавленным полем 'id'
 
@@ -245,7 +244,7 @@ export const dataProvider: DataProvider = {
    */
   update: async <RecordType extends RaRecord = DataResponse>(
     resource: string, // Название ресурса
-    params: UpdateParams<RecordType> // Параметры запроса, включая идентификатор записи и данные для обновления
+    params: UpdateParams<RecordType>, // Параметры запроса, включая идентификатор записи и данные для обновления
   ): Promise<UpdateResult<RecordType>> => {
     // Возвращаемый результат с обновлёнными данными записи
 
@@ -270,7 +269,7 @@ export const dataProvider: DataProvider = {
    */
   delete: async <RecordType extends RaRecord = DataResponse>(
     resource: string, // Название ресурса
-    params: DeleteParams<RecordType> // Параметры запроса, включая идентификатор записи и предыдущие данные
+    params: DeleteParams<RecordType>, // Параметры запроса, включая идентификатор записи и предыдущие данные
   ): Promise<DeleteResult<RecordType>> => {
     // Возвращаемый результат с данными предыдущей записи
 
@@ -295,7 +294,7 @@ export const dataProvider: DataProvider = {
    */
   deleteMany: async <RecordType extends RaRecord = DataResponse>(
     resource: string, // Название ресурса
-    params: DeleteManyParams<RecordType> // Параметры запроса, включая идентификаторы записей для удаления
+    params: DeleteManyParams<RecordType>, // Параметры запроса, включая идентификаторы записей для удаления
   ): Promise<DeleteManyResult<RecordType>> => {
     // Возвращаемый результат с массивом идентификаторов удалённых записей
 
@@ -304,7 +303,7 @@ export const dataProvider: DataProvider = {
       params.ids.map(async (id) => {
         const url = `${resource}/${id}`; // Формируем URL для запроса на удаление записи
         await apiClient.delete(url); // Выполняем DELETE-запрос для удаления записи
-      })
+      }),
     );
 
     // Возвращаем массив идентификаторов удалённых записей
@@ -323,7 +322,7 @@ export const dataProvider: DataProvider = {
    */
   getManyReference: async <RecordType extends RaRecord = DataResponse>(
     resource: string, // Название ресурса
-    params: GetManyReferenceParams // Параметры запроса, включая пагинацию, сортировку и фильтрацию
+    params: GetManyReferenceParams, // Параметры запроса, включая пагинацию, сортировку и фильтрацию
   ): Promise<GetManyReferenceResult<RecordType>> => {
     // Возвращаемый результат с массивом записей и общим количеством записей
 
@@ -373,7 +372,7 @@ export const dataProvider: DataProvider = {
    */
   updateMany: async <RecordType extends RaRecord = DataResponse>(
     resource: string, // Название ресурса
-    params: UpdateManyParams<RecordType> // Параметры запроса, включая массив идентификаторов и данные для обновления
+    params: UpdateManyParams<RecordType>, // Параметры запроса, включая массив идентификаторов и данные для обновления
   ): Promise<UpdateManyResult<RecordType>> => {
     // Возвращаемый результат с массивом идентификаторов обновлённых записей
 
@@ -382,7 +381,7 @@ export const dataProvider: DataProvider = {
       params.ids.map(async (id) => {
         const url = `${resource}/${id}`; // Формируем URL для запроса
         await apiClient.put(url, params.data); // Выполняем PUT-запрос для обновления записи
-      })
+      }),
     );
 
     // Возвращаем массив идентификаторов обновлённых записей

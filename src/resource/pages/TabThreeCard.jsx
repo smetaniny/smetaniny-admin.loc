@@ -11,7 +11,7 @@ const FileUploader = ({ onFileUpload }) => {
       // Передаем список принятых файлов родительскому компоненту
       onFileUpload(acceptedFiles);
     },
-    [onFileUpload]
+    [onFileUpload],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });

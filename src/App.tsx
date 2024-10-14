@@ -1,11 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { useEffect, useState } from "react";
-import "./global-shim";
-import "./scss/app.scss";
-import { Admin, Resource } from "react-admin";
-import { BrowserRouter } from "react-router-dom";
-import { dataProvider } from "./dataProvider";
-import { smetaninyTheme } from "./layout/Themes";
+import React, {useEffect, useState} from "react";
+import { Route } from 'react-router-dom';
+// import "./global-shim";
+// import "./scss/app.scss";
+import {Admin, Resource, CustomRoutes } from "react-admin";
+import {BrowserRouter} from "react-router-dom";
+import {dataProvider} from "./dataProvider";
+import {smetaninyTheme} from "./layout/Themes";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import i18nProvider from "./i18nProvider";
@@ -14,83 +14,90 @@ import Permissions from "./resource/permissions";
 import Pages from "./resource/pages";
 import authProvider from "./authProvider";
 import Loader from "./resource/components/Loader";
-import { Permission } from "./interface/Permission";
+import {Permission} from "./interface/Permission";
 import Roles from "./resource/roles";
-import UsersAdmin from "./resource/usersAdmin";
+import {UsersAdminModule} from "./resource/usersAdmin/Contracts/UsersAdminModule";
 
-/**
- * Компонент App
- * @returns {Element}  возвращает элемент
- * @constructor
- */
-
+// Определите компонент App
 export const App = () => {
-  const [showLoader, setShowLoader] = useState<boolean>(true);
-  const [userPermissions, setUserPermissions] = useState<Permission[]>([]);
+    const [showLoader, setShowLoader] = useState<boolean>(true);
+    const [userPermissions, setUserPermissions] = useState<Permission[]>([]);
+    const [UsersAdmin, setUsersAdmin] = useState<UsersAdminModule | null>(null);
 
-  useEffect(() => {
-    authProvider(setShowLoader, setUserPermissions)
-      .getPermissions()
-      .then((permissions) => {
-        if (permissions) {
-          setUserPermissions(permissions);
-        }
-        // setShowLoader(false);
-      })
-      .catch((e) => {
-        console.error("e", e);
-      });
-  }, []);
+    useEffect(() => {
+        authProvider(setShowLoader, setUserPermissions)
+            .getPermissions()
+            .then((permissions) => {
+                if (permissions) {
+                    setUserPermissions(permissions);
+                }
+                setShowLoader(false);
+            })
+            .catch((e) => {
+                console.error("Error fetching permissions", e);
+                setShowLoader(false);
+            });
+    }, []);
 
-  return (
-    <BrowserRouter>
-      {showLoader && <Loader />}
-      <Admin
-        theme={smetaninyTheme}
-        dataProvider={dataProvider}
-        authProvider={authProvider(setShowLoader, setUserPermissions)}
-        i18nProvider={i18nProvider}
-        dashboard={Dashboard}
-        loginPage={Login}
-        disableTelemetry
-      >
-        <Resource
-          name="usersAdmin"
-          list={UsersAdmin(userPermissions).list}
-          create={UsersAdmin(userPermissions).create}
-          edit={UsersAdmin(userPermissions).edit}
-        />
-        <Resource
-          name="users"
-          list={UsersAdmin(userPermissions).list}
-          create={UsersAdmin(userPermissions).create}
-          edit={UsersAdmin(userPermissions).edit}
-        />
-        <Resource
-          name="pages"
-          list={Pages(userPermissions).list}
-          create={Pages(userPermissions).create}
-          edit={Pages(userPermissions).edit}
-        />
-        <Resource
-          name="roles"
-          list={Roles(userPermissions).list}
-          create={Roles(userPermissions).create}
-          edit={Roles(userPermissions).edit}
-        />
-        <Resource
-          name="groupPermission"
-          list={GroupPermissions(userPermissions).list}
-          create={GroupPermissions(userPermissions).create}
-          edit={GroupPermissions(userPermissions).edit}
-        />
-        <Resource
-          name="permissions"
-          list={Permissions(userPermissions).list}
-          create={Permissions(userPermissions).create}
-          edit={Permissions(userPermissions).edit}
-        />
-      </Admin>
-    </BrowserRouter>
-  );
+    useEffect(() => {
+        // Динамически импортируйте модуль
+        import("./resource/usersAdmin").then((module) => {
+            setUsersAdmin(() => module.default as UsersAdminModule);
+        });
+    }, []);
+
+    // Проверяем, что UsersAdmin не null перед вызовом
+    const usersAdminComponents = UsersAdmin
+        ? UsersAdmin(userPermissions)
+        : {
+            list: undefined,
+            create: undefined,
+            edit: undefined,
+        };
+
+    return (
+        <BrowserRouter>
+            {!showLoader && <Loader />}
+            <Admin
+                theme={smetaninyTheme}
+                dataProvider={dataProvider}
+                authProvider={authProvider(setShowLoader, setUserPermissions)}
+                i18nProvider={i18nProvider}
+                dashboard={Dashboard}
+                loginPage={Login}
+                disableTelemetry
+            >
+                <Resource
+                    name="usersAdmin"
+                    list={usersAdminComponents.list}
+                    create={usersAdminComponents.create}
+                    edit={usersAdminComponents.edit}
+                />
+                <Resource
+                    name="pages"
+                    list={Pages(userPermissions).list}
+                    create={Pages(userPermissions).create}
+                    edit={Pages(userPermissions).edit}
+                />
+                <Resource
+                    name="roles"
+                    list={Roles(userPermissions).list}
+                    create={Roles(userPermissions).create}
+                    edit={Roles(userPermissions).edit}
+                />
+                <Resource
+                    name="groupPermission"
+                    list={GroupPermissions(userPermissions).list}
+                    create={GroupPermissions(userPermissions).create}
+                    edit={GroupPermissions(userPermissions).edit}
+                />
+                <Resource
+                    name="permissions"
+                    list={Permissions(userPermissions).list}
+                    create={Permissions(userPermissions).create}
+                    edit={Permissions(userPermissions).edit}
+                />
+            </Admin>
+        </BrowserRouter>
+    );
 };

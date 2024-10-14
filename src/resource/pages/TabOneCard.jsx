@@ -1,7 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
 import { Grid } from "@mui/material";
-import TextInputId from "@/Resource/components/TextInputId";
+import TextInputId from "../../Resource/components/TextInputId";
 import {
   AutocompleteInput,
   NumberInput,
@@ -10,9 +9,9 @@ import {
   SelectInput,
   required,
 } from "react-admin";
-import ResourceLinkField from "@/Resource/components/ResourceLinkField";
+import ResourceLinkField from "../../Resource/components/ResourceLinkField";
 import PropTypes from "prop-types";
-import TinyMCEEditor from "@/resource/components/TinyMCEEditor";
+import TinyMCEEditor from "../../resource/components/TinyMCEEditor";
 
 const TabOneCard = ({ error, flag }) => {
   return (

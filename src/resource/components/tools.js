@@ -44,7 +44,7 @@ export const EDITOR_JS_TOOLS = (filePath) => ({
           // Отправьте файл на сервер с помощью Axios или другой HTTP-библиотеки
           const response = await axios.post(
             `/api/admin/files/${filePath}`,
-            formData
+            formData,
           );
           //Получите URL загруженного файла из ответа сервера
           const { file: uploadedFile } = response.data;
