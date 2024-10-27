@@ -7,7 +7,7 @@ type SetShowLoader = (show: boolean) => void;
 type SetUserPermissions = (permissions: Permission[]) => void;
 
 interface ErrorDetail {
-    [key: string]: string[]; // Ключи — это строки, значения — массивы строк
+    [key: string]: string[];
 }
 
 const authProvider = (
