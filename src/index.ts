@@ -1,1 +1,1 @@
-export { ReactAdmin } from './ReactAdmin';
+export { ReactAdmin } from "./ReactAdmin";

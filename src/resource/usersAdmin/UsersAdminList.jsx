@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
 import { Fragment } from "react";
 import { DatagridConfigurable, DateField, List, TextField } from "react-admin";

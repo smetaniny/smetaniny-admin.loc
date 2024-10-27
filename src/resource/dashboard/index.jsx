@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
 import { Box, Card, Typography } from "@mui/material";
 import { useTranslate } from "react-admin";
